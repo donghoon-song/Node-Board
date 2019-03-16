@@ -21,4 +21,7 @@ db.Reply.belongsTo(db.Post, {
   foreignKey: "postId"
 });
 
+db.User.hasMany(db.Post);
+db.Post.belongsTo(db.User);
+
 module.exports = db;
