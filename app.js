@@ -5,12 +5,15 @@ const path = require("path");
 const session = require("express-session");
 const flash = require("connect-flash");
 const methodOverried = require("method-override");
+const passport = require("passport");
 require("dotenv").config();
 
 const pageRouter = require("./routes/page");
 const homeRouter = require("./routes/home");
+const authRouter = require("./routes/auth");
 
 const { sequelize } = require("./models");
+const passportConfig = require("./passport");
 
 const app = express();
 
@@ -46,8 +49,11 @@ app.use(
 );
 app.use(flash());
 app.use(methodOverried("_method"));
+app.use(passport.initialize()); // req객체에 passport 설정을 심어준다.
+app.use(passport.session()); // req.session 객체에 passport 정보를 저장한다. req.session 객체는 express-session에서 생성하니까 passport 미들웨어는 express-session 미들웨어보다 뒤에 연결되어야 한다.
 
 app.use("/", homeRouter);
+app.use("auth", authRouter);
 
 app.use((req, res, next) => {
   const err = new Error("Not Found");
@@ -55,7 +61,7 @@ app.use((req, res, next) => {
   next(err);
 });
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
   res.status(err.status || 500);
@@ -63,5 +69,5 @@ app.use((err, req, res) => {
 });
 
 app.listen(app.get("port"), () => {
-  console.log(app.get("port"), "번 포트에서 대기 중");
+  console.log(app.get("port"), "번 포트에서 대기중");
 });

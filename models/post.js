@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) =>
       content: {
         type: DataTypes.STRING(140),
         allowNull: false
+      },
+      view: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
       }
     },
     {

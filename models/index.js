@@ -15,6 +15,7 @@ db.Sequelize = Sequelize;
 
 db.Post = require("./post")(sequelize, Sequelize);
 db.Reply = require("./reply")(sequelize, Sequelize);
+db.User = require("./user")(sequelize, Sequelize);
 
 db.Post.hasMany(db.Reply);
 db.Reply.belongsTo(db.Post, {

@@ -25,6 +25,12 @@ router.get("/", function(req, res, next) {
   });
 });
 
+// router.get("/", function(req, res, next) {
+//   Post.findAll({}).then(result => {
+//     res.render("main", { posts: result });
+//   });
+// });
+
 router.post("/write", async (req, res, next) => {
   try {
     const post = await Post.create({
